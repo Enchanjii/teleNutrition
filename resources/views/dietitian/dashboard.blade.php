@@ -7,6 +7,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <a href="{{ route('dietitian.appointments.index') }}"
+                    class="inline-block mb-4 px-4 py-2 bg-gray-800 text-white rounded-md">Appointments</a>
+
                 <form method="GET" action="{{ route('dietitian.dashboard') }}" class="flex items-end gap-3">
                     <div>
                         <x-input-label for="date" value="Review date" />

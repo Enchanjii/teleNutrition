@@ -8,11 +8,13 @@
 
             <div class="bg-white shadow-sm sm:rounded-lg p-6 space-y-4">
                 <p>Welcome, {{ auth()->user()->name }}.</p>
-                <div class="flex gap-3">
+                <div class="flex flex-wrap gap-3">
                     <a href="{{ route('patient.profile.edit') }}"
                         class="inline-block px-4 py-2 bg-gray-800 text-white rounded-md">Health profile</a>
                     <a href="{{ route('patient.meals.index') }}"
                         class="inline-block px-4 py-2 bg-gray-800 text-white rounded-md">Log a meal</a>
+                    <a href="{{ route('patient.appointments.index') }}"
+                        class="inline-block px-4 py-2 bg-gray-800 text-white rounded-md">Appointments</a>
                 </div>
             </div>
 
