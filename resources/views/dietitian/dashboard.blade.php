@@ -40,7 +40,10 @@
                     <tbody>
                         @forelse ($rows as $row)
                             <tr class="border-t align-top">
-                                <th scope="row" class="py-2 font-normal">{{ $row['patient']->name }}</th>
+                                <th scope="row" class="py-2 font-normal">
+                                    <a href="{{ route('dietitian.patients.show', ['patient' => $row['patient'], 'date' => $date->format('Y-m-d')]) }}"
+                                        class="underline text-blue-700">{{ $row['patient']->name }}</a>
+                                </th>
 
                                 @if (!$row['has_profile'])
                                     <td class="py-2" colspan="2">Health profile not completed.</td>

@@ -9,6 +9,15 @@ class IntakeSummary
 {
     public const NUTRIENTS = ['calories', 'protein_g', 'carbs_g', 'fat_g', 'fiber_g', 'sodium_mg'];
 
+    public const LABELS = [
+        'calories' => ['Calories', 'kcal'],
+        'protein_g' => ['Protein', 'g'],
+        'carbs_g' => ['Carbohydrates', 'g'],
+        'fat_g' => ['Fat', 'g'],
+        'fiber_g' => ['Fiber', 'g'],
+        'sodium_mg' => ['Sodium (limit)', 'mg'],
+    ];
+
     /** Total nutrients a patient ate on a given day (food values x servings). */
     public function forDay(int $userId, CarbonInterface $date): array
     {
@@ -26,5 +35,23 @@ class IntakeSummary
         }
 
         return array_map(fn($value) => round($value, 1), $totals);
+    }
+
+    /** Rows of intake vs target (with percent of target) for display. */
+    public function compare(array $targets, array $intake): array
+    {
+        $rows = [];
+
+        foreach (self::LABELS as $key => [$label, $unit]) {
+            $rows[] = [
+                'label' => $label,
+                'unit' => $unit,
+                'intake' => $intake[$key],
+                'target' => $targets[$key],
+                'percent' => $targets[$key] > 0 ? round($intake[$key] / $targets[$key] * 100) : 0,
+            ];
+        }
+
+        return $rows;
     }
 }
