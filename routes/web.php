@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PatientProfileController;
 use App\Http\Controllers\MealLogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,8 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
     Route::view('/patient/dashboard', 'patient.dashboard')->name('patient.dashboard');
     Route::get('/patient/meals', [MealLogController::class, 'index'])->name('patient.meals.index');
     Route::post('/patient/meals', [MealLogController::class, 'store'])->name('patient.meals.store');
+    Route::get('/patient/profile', [PatientProfileController::class, 'edit'])->name('patient.profile.edit');
+    Route::put('/patient/profile', [PatientProfileController::class, 'update'])->name('patient.profile.update');
 });
 
 Route::middleware(['auth', 'role:dietitian'])->group(function () {
