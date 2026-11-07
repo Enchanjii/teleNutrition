@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PatientDashboardController;
 use App\Http\Controllers\PatientProfileController;
 use App\Http\Controllers\MealLogController;
 use App\Http\Controllers\ProfileController;
@@ -16,7 +17,7 @@ Route::get('/dashboard', function () {
 })->middleware('auth')->name('dashboard');
 
 Route::middleware(['auth', 'role:patient'])->group(function () {
-    Route::view('/patient/dashboard', 'patient.dashboard')->name('patient.dashboard');
+    Route::get('/patient/dashboard', PatientDashboardController::class)->name('patient.dashboard');
     Route::get('/patient/meals', [MealLogController::class, 'index'])->name('patient.meals.index');
     Route::post('/patient/meals', [MealLogController::class, 'store'])->name('patient.meals.store');
     Route::get('/patient/profile', [PatientProfileController::class, 'edit'])->name('patient.profile.edit');
