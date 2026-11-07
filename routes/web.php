@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DietitianDashboardController;
 use App\Http\Controllers\PatientDashboardController;
 use App\Http\Controllers\PatientProfileController;
 use App\Http\Controllers\MealLogController;
@@ -25,7 +26,7 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:dietitian'])->group(function () {
-    Route::view('/dietitian/dashboard', 'dietitian.dashboard')->name('dietitian.dashboard');
+    Route::get('/dietitian/dashboard', DietitianDashboardController::class)->name('dietitian.dashboard');
 });
 
 Route::middleware('auth')->group(function () {
