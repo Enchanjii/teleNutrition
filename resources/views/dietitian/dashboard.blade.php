@@ -7,8 +7,12 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                <a href="{{ route('dietitian.appointments.index') }}"
-                    class="inline-block mb-4 px-4 py-2 bg-gray-800 text-white rounded-md">Appointments</a>
+                <div class="flex flex-wrap gap-3 mb-4">
+                    <a href="{{ route('dietitian.appointments.index') }}"
+                        class="inline-block px-4 py-2 bg-gray-800 text-white rounded-md">Appointments</a>
+                    <a href="{{ route('dietitian.export', ['date' => $date->format('Y-m-d')]) }}"
+                        class="inline-block px-4 py-2 bg-gray-800 text-white rounded-md">Export de-identified CSV</a>
+                </div>
 
                 <form method="GET" action="{{ route('dietitian.dashboard') }}" class="flex items-end gap-3">
                     <div>

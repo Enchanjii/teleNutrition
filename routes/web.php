@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DeidentifiedExportController;
 use App\Http\Controllers\DietitianAppointmentController;
 use App\Http\Controllers\DietitianDashboardController;
 use App\Http\Controllers\MealLogController;
@@ -34,8 +35,12 @@ Route::middleware(['auth', 'role:patient'])->group(function () {
 
 Route::middleware(['auth', 'role:dietitian'])->group(function () {
     Route::get('/dietitian/dashboard', DietitianDashboardController::class)->name('dietitian.dashboard');
-    Route::get('/dietitian/patients/{patient}', [PatientChartController::class, 'show'])->name('dietitian.patients.show');
-    Route::post('/dietitian/patients/{patient}/notes', [PatientChartController::class, 'store'])->name('dietitian.patients.notes.store');
+    Route::get('/dietitian/patients/{patient}', [PatientChartController::class, 'show'])
+        ->middleware('audit:chart.view')->name('dietitian.patients.show');
+    Route::post('/dietitian/patients/{patient}/notes', [PatientChartController::class, 'store'])
+        ->middleware('audit:chart.note.create')->name('dietitian.patients.notes.store');
+    Route::get('/dietitian/export', DeidentifiedExportController::class)
+        ->middleware('audit:export.deidentified')->name('dietitian.export');
     Route::get('/dietitian/appointments', [DietitianAppointmentController::class, 'index'])->name('dietitian.appointments.index');
     Route::patch('/dietitian/appointments/{appointment}', [DietitianAppointmentController::class, 'update'])->name('dietitian.appointments.update');
 });
