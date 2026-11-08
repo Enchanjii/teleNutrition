@@ -34,7 +34,7 @@
 
                     <div class="relative h-80 mt-4" role="img"
                         aria-label="Bar chart of today's nutrient intake as a percentage of the daily target">
-                        <canvas id="intakeChart" aria-hidden="true"></canvas>
+                        <canvas id="intakeChart"></canvas>
                     </div>
 
                     <table class="mt-6 w-full text-left text-sm">
