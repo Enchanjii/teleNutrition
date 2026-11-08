@@ -32,9 +32,9 @@
                         · Basal metabolic rate (BMR): {{ number_format($targets['bmr']) }} kcal
                     </p>
 
-                    <div class="relative h-80 mt-4">
-                        <canvas id="intakeChart" role="img"
-                            aria-label="Bar chart of today's nutrient intake as a percentage of the daily target"></canvas>
+                    <div class="relative h-80 mt-4" role="img"
+                        aria-label="Bar chart of today's nutrient intake as a percentage of the daily target">
+                        <canvas id="intakeChart" aria-hidden="true"></canvas>
                     </div>
 
                     <table class="mt-6 w-full text-left text-sm">

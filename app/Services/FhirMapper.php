@@ -139,7 +139,7 @@ class FhirMapper
 
         $observation = [
             'resourceType' => 'Observation',
-            'id' => md5($user->public_id . $seed),
+            'id' => substr(hash('sha256', $user->public_id . $seed), 0, 32),
             'status' => 'final',
             'code' => [
                 'coding' => [['system' => $system, 'code' => $code, 'display' => $display]],
