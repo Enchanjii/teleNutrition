@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\AppointmentScheduler;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -41,20 +42,32 @@ class AppointmentController extends Controller
         $dietitianId = (int) $request->validated('dietitian_id');
         $patientId = $request->user()->id;
 
-        if ($scheduler->hasConflict($dietitianId, $patientId, $start)) {
+        $booked = DB::transaction(function () use ($scheduler, $dietitianId, $patientId, $start) {
+            // Lock both users' rows (always in id order, to avoid deadlocks) so two simultaneous
+            // bookings cannot both pass the overlap check below.
+            User::whereIn('id', [$dietitianId, $patientId])->orderBy('id')->lockForUpdate()->get();
+
+            if ($scheduler->hasConflict($dietitianId, $patientId, $start)) {
+                return false;
+            }
+
+            Appointment::create([
+                'patient_id' => $patientId,
+                'dietitian_id' => $dietitianId,
+                'scheduled_at' => $start,
+                'duration_minutes' => AppointmentScheduler::DURATION_MINUTES,
+                'status' => 'scheduled',
+                'room_id' => 'telenutrition-' . Str::lower(Str::random(24)),
+            ]);
+
+            return true;
+        });
+
+        if (!$booked) {
             return back()->withInput()->withErrors([
                 'scheduled_at' => 'That time overlaps another appointment. Please choose a different time.',
             ]);
         }
-
-        Appointment::create([
-            'patient_id' => $patientId,
-            'dietitian_id' => $dietitianId,
-            'scheduled_at' => $start,
-            'duration_minutes' => AppointmentScheduler::DURATION_MINUTES,
-            'status' => 'scheduled',
-            'room_id' => 'telenutrition-' . Str::lower(Str::random(24)),
-        ]);
 
         return redirect()->route('patient.appointments.index')->with('status', 'Appointment booked.');
     }
